@@ -1,0 +1,146 @@
+package stack_booklist_hw;
+
+import java.util.Scanner;
+
+class book{
+    
+    //Using a linked list, create a stack of books using a stack
+    
+    String title;
+    String author;
+    
+    public book next;
+    public book prev;
+
+    public book(String title, String author) {
+        this.title = title;
+        this.author = author;
+        this.next = next;
+        this.prev = prev;
+    }
+
+    public book() {
+        
+    }
+
+    public void displayBook(){
+        System.out.println("{" + author + " - " + title + "}");}   
+}
+
+class BookList{
+    
+    private static book first;
+    private static book last;
+    
+    //Booklist functions
+    public BookList(){
+        first = null;
+        last = null;
+    }
+    
+    public boolean isEmpty(){
+        return(first == null);
+    }    
+   
+    public void Push(String title, String author){
+         //insert first
+        book newBook = new book(title, author); 
+        if(isEmpty()){
+            last = newBook;
+            first = newBook;
+        }
+        else{
+            first.prev = newBook;  
+            newBook.next = first;
+        } 
+        first = newBook;
+        //theList.PrintBookList();
+    }    
+
+    public boolean Pop(){
+        //Allow the user to remove the top book (pop function)
+        book temp = first;        
+        if(first.next == null){
+            last = null;
+            first = null;
+        }else{
+            first.next.prev = null;
+            first = first.next;
+        }     
+        return true;
+    }
+
+    public book Peek(){
+        //Allow the user to peek at the top book (peek function)
+        //System.out.println("{" + first.title + " - " + first.author + "}");
+        book current = first;
+        return first;
+    }    
+   
+    public void PrintBookList(){
+        //Allow the user to print the books in order of the 
+        //stack - top to bottom 
+        System.out.println("Book List(first ---> last) : ");
+        book current = first;
+        while(current != null){
+            current.displayBook();
+            current = current.next;}
+        System.out.println("\n------------\n");
+        //Go back to the menu for more choices. 
+    }
+    
+}
+public class Stack_booklist_hw {
+
+    public static void UserBookList(){
+        BookList theList = new BookList();
+        String Response;
+        Scanner bookscan = new Scanner(System.in);
+        
+        theList.Push("Homegoing", "Yaa Gyasi");
+        theList.Push("End Game", "Lisa Renee Jones");
+        theList.Push("All the lights we cannot see", "Anthony Doerr");
+        
+        //allow the user to add a book to the list
+        System.out.println("----------BookList-------------");
+        System.out.println("Would you like to add a book to the list? y/n");
+        Response = bookscan.nextLine().toLowerCase();
+        while(Response.equals("y")){
+            System.out.println("What is the title of the book you would like to add?");
+            String title = bookscan.nextLine();
+            System.out.println("Who is the author of the book?");
+            String author = bookscan.nextLine();
+            theList.Push(title, author);
+            theList.PrintBookList();
+            
+            System.out.println("Would you like to add another book to the list? y/n");
+            Response = bookscan.nextLine().toLowerCase();
+        }
+        
+        
+        //allow the user to peek at the next book in the list
+        System.out.println("Would you like to see the next book in the list? y/n");
+        Response = bookscan.nextLine().toLowerCase();
+        if (Response.equals("y")) {
+            book temp = new book();
+            temp = theList.Peek();
+            temp.displayBook();
+        }
+        
+        //allow the user to remove a book from the list
+        System.out.println("Would you like to remove a book from the list? y/n");
+        Response = bookscan.nextLine().toLowerCase();
+        while (Response.equals("y")) {
+            theList.Pop();
+            theList.PrintBookList();
+
+            System.out.println("Would you like to delete another train to the list? y/n");
+            Response = bookscan.nextLine().toLowerCase();
+        }
+    }
+
+    public static void main(String[] args) {
+        UserBookList();
+    }
+    
+}
