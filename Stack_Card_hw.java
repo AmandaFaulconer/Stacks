@@ -1,0 +1,170 @@
+/*
+Amanda Faulconer
+Card Stack HW
+ */
+package stack_card_hw;
+
+import java.util.Random;
+import java.util.Scanner;
+
+class Card{
+    
+    public String suit;
+    public String rank;
+    
+    public Card(){
+        
+    }
+
+    public Card(String suit, String rank) {
+        this.suit = suit;
+        this.rank = rank;
+    }
+
+    public void displayCard(){
+        System.out.println("{" + suit + " - " + rank + "}");
+    }
+    
+    public String display(){
+        return("{" + suit + " - " + rank + "}");
+    }      
+}
+
+class make_deck{    
+    
+    static Card deck_stack[];
+    static int data_size = 0;
+    static int deckcntr = -1;
+    static Card[] deck = new Card[52];
+    static Card[] shuffle_deck = new Card[52];
+    static Scanner deckScan = new Scanner(System.in);   
+    
+    public make_deck(){
+        deck_stack = new Card[52];
+        createdeck();
+    }
+    
+    static boolean isEmpty(){
+        if(data_size == 0){
+            System.out.println("Empty");
+            return true;
+        }else{
+            return false;
+        }
+    }
+     
+    static boolean isFull(){
+        if(data_size == deck_stack.length){
+            System.out.println("Array is full");
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    static public void createdeck(){    
+       String[] suits = {"Heart", "Diamond", "Spade", "Club"};
+       String rank = "";      
+       for(int s = 0; s < 4; s++){
+           String suit = suits[s];
+        for(int r = 1; r < 14; r++){           
+            deckcntr++;       
+            if(r == 1){
+                rank = "Ace";
+            }
+            else if(r == 11){
+                rank = "Jack";
+            }
+            else if(r == 12){
+                rank = "Queen";
+            }
+            else if(r == 13){
+                rank = "King";
+            }
+            else{
+                rank = String.valueOf(r);
+            }
+            Card nc = new Card(suit,rank);
+            deck[deckcntr] = nc;
+            System.out.println(deckcntr);             
+         }
+       }
+       
+        System.out.println();
+    }
+    
+    static void shuffle_deck(){
+        int sc = 0;
+        int random;
+        Random RNG = new Random();
+        boolean run = true;        
+        while (run){
+            random = RNG.nextInt(52);
+           // System.out.println(random);
+            if(!(deck[random].rank.equals("x"))){
+                Card nc = new Card();
+                shuffle_deck[sc] = nc;
+                shuffle_deck[sc].rank = deck[random].rank;
+                shuffle_deck[sc].suit = deck[random].suit;
+                sc++;
+                deck[random].rank = "x";
+            }
+            if(sc == 52){
+                run = false;
+            }
+        }
+        System.out.println("Your card deck was shuffled!");                
+    }
+    
+    static void printDeck(){
+        System.out.println("Print The_Deck: ");
+        for(int c = 0; c < deck.length; c++){
+            System.out.println(deck[c].rank + deck[c].suit);
+        }
+     } 
+     
+    static public void printShuffle(){
+        System.out.println("Print Shuffled deck: ");
+        for(int c = 0; c < shuffle_deck.length; c++){
+            System.out.println(shuffle_deck[c].rank + shuffle_deck[c].suit);
+        }
+     } 
+    
+    public Card pop(){
+
+        Card First = new Card();
+        if(deckcntr < 0){
+            return null;
+        }
+        First = shuffle_deck[deckcntr -1];
+        //System.out.println(First.display());
+        deckcntr--;
+        return First;
+    }
+    
+    public boolean push(Card DealtCard){
+        if(isFull()){
+            return false;
+        } else{
+            deck_stack[data_size] = DealtCard;
+            data_size++;
+            return true;
+        }
+    }
+       
+}
+public class Stack_Card_hw {
+
+
+    public static void main(String[] args) {
+        System.out.println("------Deck-------\n");
+        make_deck userDeck = new make_deck();
+        System.out.println("------Shuffle-------\n");
+        userDeck.shuffle_deck();
+        System.out.println("\n------Dealt Card-------\n");
+        Card temp = new Card();
+        temp = userDeck.pop();
+        System.out.println(temp.display());
+    }   
+}
