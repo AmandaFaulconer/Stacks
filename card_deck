@@ -1,7 +1,4 @@
-/*
-Amanda Faulconer
-Card Stack HW
- */
+
 package stack_card_hw;
 
 import java.util.Random;
